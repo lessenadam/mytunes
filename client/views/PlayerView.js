@@ -10,11 +10,20 @@ var PlayerView = Backbone.View.extend({
       this.model.ended();
       // this.setSong(songQueue.models[0]);
     }.bind(this));
+
+    
     
   },
 
   setSong: function(song) {
     this.model = song;
+    this.model.on('stop', function() {
+      this.el.pause();
+      this.el.currentTime = 0;
+    }.bind(this));
+    if (this.el.paused) {
+      this.el.play();
+    }
     this.render();
   },
 
