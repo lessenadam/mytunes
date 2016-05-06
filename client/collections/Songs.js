@@ -3,19 +3,31 @@ var Songs = Backbone.Collection.extend({
 
   model: SongModel,
 
-  url: 'https://api.parse.com/1/classes/songs/'
+  url: 'https://api.parse.com/1/classes/songs/',
 
-  // initialize: function () {
-  //   this.fetch();
-  // },
+  initialize: function () {
+    this.fetch(this);
+  },
+
+  fetch: function(collection) { 
+    $.ajax({
+      url: 'https://api.parse.com/1/classes/songs/',
+      success: function(response){
+        response.results;
+        collection.reset();
+
+        for (var i = 0; i < response.results.length; i++) {
+        // loop over results and add to songs
+          collection.add(response.results[i]);
+
+        }
+
+        collection.trigger('fetched', this);
 
 
-  // parse: function(response, options) {
-  //   var results = [];
-  //   for (var i = 0; i < response.results.length; i++) {
-  //     // results.push(response.results[i]);
-  //     results.push(new SongModel(response.results[i]));
-  //   }
-  //   return results;
-  // }
+      }
+    });
+  }
+
+
 });
